@@ -1,0 +1,32 @@
+{
+  "name": "snuoball",
+  "version": "1.0.0",
+  "description": "xueqiu spider automation",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stevennuo/snuoball.git"
+  },
+  "keywords": [
+    "xueqiu",
+    "spider",
+    "automation"
+  ],
+  "author": "linuo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stevennuo/snuoball/issues"
+  },
+  "homepage": "https://github.com/stevennuo/snuoball#readme",
+  "dependencies": {
+    "co": "^4.6.0",
+    "co-request": "^1.0.0",
+    "cookie": "^0.2.3",
+    "fs-promise": "^0.5.0",
+    "http-status": "^0.2.2",
+    "lodash": "^4.11.2"
+  }
+}
