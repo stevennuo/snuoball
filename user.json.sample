@@ -1,0 +1,10 @@
+{
+    "areacode": 86,
+    "password": "2d4243a4d6c1ac001aa3603c5e4b27ea", // 可以直接填密码, 也可以填md5值,程序会根据字符串长度判断
+    "telephone": "13251974712", // 手机登陆号, 怕不安全下个阿里小号吧~
+    "cookie": { // 以下部分程序将自动生成
+        "s": "xxxxxxxxxx",
+        "xq_a_token": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "xq_r_token": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+}
