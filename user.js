@@ -13,32 +13,37 @@ const get = function* () {
     if (!user.password) yield Promise.reject(new Error('password cant be empty'));
     if (user.password.length != 32) user.password = crypto.createHash('md5').update(user.password).digest("hex");
     const success = yield test(user);
-    //if(success) return user;
-    //else return yield login(user);
+    if(success) {
+        console.log('existing cookie passed')
+        return user;
+    } else {
+        console.log('existing cookie failed, create a new cookie')
+        return yield login(user);
+    }
 };
 
 const getCookieString = (cookie) => {
-    
+    return _.chain(cookie)
+        .toPairs()
+        .map((x) => `${x[0]}=${x[1]}`)
+        .value()
+        .join(';');
 };
 
 const test = function* (user) {
+    //console.log(user.cookie)
     const res = yield request({
         uri: xueqiu.show,
         headers: {
-            'Cookie': cookie.serialize(user.cookie)
+            'Cookie': getCookieString(user.cookie)
         }
     });
 
-    console.log(cookie.serialize(user.cookie))
-    console.log(res.statusCode);
-    console.log(res.body);
+    //console.log(getCookieString(user.cookie))
+    //console.log(res.statusCode);
+    //console.log(res.body);
 
-    if(res.statusCode === STATUS.OK){
-
-    } else {
-
-    }
-    return user;
+    return res.statusCode === STATUS.OK
 };
 
 const login = function* (user) {
@@ -69,15 +74,15 @@ const login = function* (user) {
         // success = no key missing
         user.cookie = obj;
         yield fsp.writeFile(config.json, JSON.stringify(user, null, 4));
-    } else { // failed
+    } else {
+        // failed
         yield Promise.reject(new Error(`login failed:\n${cookies}`));
     }
 
-    console.log(user);
+    //console.log(user);
     return user;
 };
 
 module.exports = {
     get
 };
-
