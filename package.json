@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/stevennuo/snuoball#readme",
   "dependencies": {
+    "cheerio": "^0.20.0",
     "co": "^4.6.0",
     "co-request": "^1.0.0",
     "cookie": "^0.2.3",

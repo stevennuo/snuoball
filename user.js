@@ -5,6 +5,8 @@ const crypto = require('crypto');
 const fsp = require('fs-promise');
 const STATUS = require('http-status');
 
+const util = require('./util');
+
 const config = global.config.user;
 const xueqiu = global.config.xueqiu;
 
@@ -13,21 +15,13 @@ const get = function* () {
     if (!user.password) yield Promise.reject(new Error('password cant be empty'));
     if (user.password.length != 32) user.password = crypto.createHash('md5').update(user.password).digest("hex");
     const success = yield test(user);
-    if(success) {
+    if (success) {
         console.log('existing cookie passed')
         return user;
     } else {
-        console.log('existing cookie failed, create a new cookie')
+        console.log('existing cookie failed, create a new one')
         return yield login(user);
     }
-};
-
-const getCookieString = (cookie) => {
-    return _.chain(cookie)
-        .toPairs()
-        .map((x) => `${x[0]}=${x[1]}`)
-        .value()
-        .join(';');
 };
 
 const test = function* (user) {
@@ -35,7 +29,7 @@ const test = function* (user) {
     const res = yield request({
         uri: xueqiu.show,
         headers: {
-            'Cookie': getCookieString(user.cookie)
+            'Cookie': util.getCookieString(user.cookie)
         }
     });
 
@@ -70,7 +64,7 @@ const login = function* (user) {
         .reduce(_.extend)
         .pick(config.token)
         .value();
-    if(Object.keys(obj).length == config.token.length){
+    if (Object.keys(obj).length == config.token.length) {
         // success = no key missing
         user.cookie = obj;
         yield fsp.writeFile(config.json, JSON.stringify(user, null, 4));
@@ -83,6 +77,11 @@ const login = function* (user) {
     return user;
 };
 
+const init = function* () {
+    global.user = yield get();
+    global.cookie = util.getCookieString(global.user.cookie);
+}
+
 module.exports = {
-    get
+    get, init
 };

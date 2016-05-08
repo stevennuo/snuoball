@@ -1,13 +1,22 @@
 const co = require('co');
 
 // should be above all - modify global.config
-const config = require('./config.js');
+const config = require('./config');
 
-const user = require('./user.js');
+const user = require('./user');
+const stock = require('./stock');
+const cube = require('./cube');
+const util = require('./util');
 
 co(function* () {
 
-    const u = yield user.get();
+
+    // user
+    yield user.init();
+
+    // cube
+    //yield cube.init();
+    yield cube.create({name:'hahahah',market:'us'});
 
 }).catch(function (err) {
     console.error(err);
